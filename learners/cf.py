@@ -34,14 +34,42 @@ class CollaborativeFilter:
 
     def _HITS(self, A, MTM, H, MMT):
         # Power iteration method
-        for _ in range(100):
+        count = 0
+        while count < 100:
+            prevA = A
             A = np.dot(MTM, A)
             # This could've been np.dot(MT, H)
             A /= np.linalg.norm(A)
 
+            prevH = H
             H = np.dot(MMT, H)
             # This could've been np.dot(M, A)
             H /= np.linalg.norm(H)
+            #pdb.set_trace()
+
+            if np.array_equal(A, prevA) and np.array_equal(H, prevH):
+                break
+
+            numA = np.dot(A, prevA)
+            denomA = np.linalg.norm(A)*np.linalg.norm(prevA)
+            if numA/denomA > 1.0:
+                # rounding
+                deltaA = math.acos(1.0)
+            else:
+                deltaA = math.acos(numA/denomA)
+
+            numH = np.dot(H, prevH)
+            denomH = np.linalg.norm(H)*np.linalg.norm(prevH)
+            if numH/denomH > 1.0:
+                # rounding
+                deltaH = math.acos(1.0)
+            else:
+                deltaH = math.acos(numH/denomH)
+
+            if deltaA < .001 and deltaH < .001:
+                break
+
+            count += 1
         return A, H
 
     def _TF_IDF(self, users, usr_venue_cnt):

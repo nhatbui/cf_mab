@@ -15,7 +15,7 @@ header = [
     'datetime'             # UTC time
 ]
 dt_format = '%a %b %d %H:%M:%S %z %Y'
-usr_loc_hist_path = './dataset_tsmc2014/dataset_TSMC2014_TKY.txt'
+usr_loc_hist_path = './data/dataset_tsmc2014/dataset_TSMC2014_TKY.txt'
 usr_loc_hist = pd.read_csv(usr_loc_hist_path,
                            names=header,
                            header=0,
